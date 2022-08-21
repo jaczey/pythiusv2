@@ -3,13 +3,9 @@ import asyncio
 import pymongo
 from pymongo.server_api import ServerApi
 
-async def claim(userID, guildID):
+async def claim(database, userID, guildID):
     api = mee6(guildID)
     level = await api.levels.get_user_level(userID)
-
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
 
     db = client['pythius']
     col = db['users']
