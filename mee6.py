@@ -6,7 +6,8 @@ from pymongo.server_api import ServerApi
 async def claim(database, userID, guildID):
     api = mee6(guildID)
     level = await api.levels.get_user_level(userID)
-
+    
+    client = database
     db = client['pythius']
     col = db['users']
     query = {"userID": str(userID)}
