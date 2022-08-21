@@ -2,7 +2,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 from datetime import datetime
 
-def createAccount(userID):
+def createAccount(database, userID):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -27,7 +27,7 @@ def createAccount(userID):
             return "Failed"
     else:
         return result
-def getBalance(userID):
+def getBalance(database, userID):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -44,7 +44,7 @@ def getBalance(userID):
 
     return result
 
-def editBalance(userID, balance, amount, changes):
+def editBalance(database, userID, balance, amount, changes):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -66,17 +66,4 @@ def editBalance(userID, balance, amount, changes):
 
     return newBalance
 
-
-def connect():
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
-    dblist = client.list_database_names()
-    mydb = client['pythius']
-    col = mydb['users']
-
-    mydict = {"userID": "835527869076996096", "balance": 100, "lastchanged": "idk"}
-
-    x = col.insert_one(mydict)
 
