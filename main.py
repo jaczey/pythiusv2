@@ -78,7 +78,7 @@ async def buy(
         name: Option(SlashCommandOptionType.role, "Role you want to add", required=True)
 ):
     await ctx.defer()
-    requirement = pyshop.checkRole(name.id)
+    requirement = pyshop.checkRole(database, name.id)
     if not requirement:
         return await ctx.respond(
             f"Item isn't available in the shop")
