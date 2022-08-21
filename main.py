@@ -13,6 +13,9 @@ client = commands.Bot(debug_guilds=[835693520865591327, 921049690265497621], int
 EditBalance = client.create_group(name="editbalance", description="Edit user's current balance")
 Marketplace = client.create_group(name="shop", description="Marketplace commands")
 
+database = pymongo.MongoClient(
+        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
+        server_api=ServerApi('1'))
 
 @client.slash_command(description="Claim PyCoins")
 async def claim(
@@ -21,7 +24,7 @@ async def claim(
     await ctx.defer()
     userID = ctx.author.id
     guildID = 921049690265497621
-    status = await mee6.claim(userID, guildID)
+    status = await mee6.claim(database, userID, guildID)
     if status[0] == "Error":
         if status[1] == "Not created":
             return await ctx.respond(
@@ -41,7 +44,7 @@ async def createaccount(
 ):
     await ctx.defer()
     userID = ctx.author.id
-    status = pythius.createAccount(userID)
+    status = pythius.createAccount(database, userID)
     if status == str(ctx.author.id):
         return await ctx.respond(
             f"Account for <@{ctx.author.id}> already exists")
@@ -69,7 +72,7 @@ async def buy(
             return await ctx.respond(
                 f"User already has the item")
         else:
-            status = pyshop.buyitem(ctx.author.id, name.id)
+            status = pyshop.buyitem(database, ctx.author.id, name.id)
             if status == "User not found":
                 return await ctx.respond(
                     f"User doesn't have an account yet, please create an account")
@@ -96,7 +99,7 @@ async def buy(
                 return await ctx.respond(
                     f"User already has the item")
             else:
-                status = pyshop.buyitem(ctx.author.id, name.id)
+                status = pyshop.buyitem(database, ctx.author.id, name.id)
                 if status == "User not found":
                     return await ctx.respond(
                         f"User doesn't have an account yet, please create an account")
@@ -124,7 +127,7 @@ async def show(
         ctx,
 ):
     await ctx.defer()
-    items = pyshop.showshop()
+    items = pyshop.showshop(database)
     if len(items) == 0:
         return await ctx.respond(
             f"No items available at the moment")
@@ -159,9 +162,9 @@ async def add(
     if role.name == "@everyone":
         return await ctx.respond("Invalid Role")
     if requirement is not None:
-        result = pyshop.additem(role.name, role.id, amount, price, requirement.id)
+        result = pyshop.additem(database, role.name, role.id, amount, price, requirement.id)
     else:
-        result = pyshop.additem(role.name, role.id, amount, price, requirement)
+        result = pyshop.additem(database, role.name, role.id, amount, price, requirement)
     if not result:
         return await ctx.respond(
             f"Role already exists in the shop or server error, contact support.")
@@ -179,7 +182,7 @@ async def remove(
     await ctx.defer()
     if role.name == "@everyone":
         return await ctx.respond("Invalid Role")
-    result = pyshop.removeitem(role.id)
+    result = pyshop.removeitem(database, role.id)
     if result:
         return await ctx.respond(
             f"Role successfully removed from the shop.")
@@ -198,7 +201,7 @@ async def remove(
     await ctx.defer()
 
     userID = int(user.id)
-    currentBalance = pythius.getBalance(userID)
+    currentBalance = pythius.getBalance(database, userID)
     if currentBalance is None:
         return await ctx.respond(f"{user.mention} doesn't have an account yet")
     elif amount <= 0:
@@ -207,7 +210,7 @@ async def remove(
         return await ctx.respond(
             f"{user.mention} has lower balanace than the amount inserted. `{user.name}'s  Balance = {currentBalance}`")
 
-    newBalance = pythius.editBalance(userID, currentBalance, amount, 'remove')
+    newBalance = pythius.editBalance(database, userID, currentBalance, amount, 'remove')
     return await ctx.respond(
         f"Successfully removed {amount} from {user.mention}'s balance. `{user.name}'s Balance = {newBalance}`")
 
@@ -222,13 +225,13 @@ async def add(
     await ctx.defer()
 
     userID = int(user.id)
-    currentBalance = pythius.getBalance(userID)
+    currentBalance = pythius.getBalance(database, userID)
     if currentBalance is None:
         return await ctx.respond(f"{user.mention} doesn't have an account yet")
     elif amount <= 0:
         return await ctx.respond(f"Amount must be greater than 0")
 
-    newBalance = pythius.editBalance(userID, currentBalance, amount, 'add')
+    newBalance = pythius.editBalance(database, userID, currentBalance, amount, 'add')
     return await ctx.respond(
         f"Successfully added {amount} to {user.mention}'s balance. `{user.name}'s Balance = {newBalance}`")
 
