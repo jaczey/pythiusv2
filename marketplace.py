@@ -3,10 +3,7 @@ from pymongo.server_api import ServerApi
 
 #roleid,left,price,requirement
 def showshop(database):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
     db = client['pythius']
     shop = db['shop']
 
@@ -22,10 +19,7 @@ def showshop(database):
     return items
 
 def additem(database, roleName, roleID, amount, price, requirement):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
     db = client['pythius']
     shop = db['shop']
 
@@ -45,10 +39,7 @@ def additem(database, roleName, roleID, amount, price, requirement):
         return False
 
 def removeitem(database, roleID):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
     db = client['pythius']
     shop = db['shop']
 
@@ -66,10 +57,7 @@ def removeitem(database, roleID):
         return False
 
 def checkRole(database, roleID):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
     db = client['pythius']
     shop = db['shop']
 
@@ -83,10 +71,7 @@ def checkRole(database, roleID):
         return False
 
 def buyitem(database, userID, roleID):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
     db = client['pythius']
     shop = db['shop']
     col = db['users']
