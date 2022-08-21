@@ -17,6 +17,20 @@ database = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
 
+@client.slash_command(description="Check balance")
+async def balance(
+        ctx
+):
+    await ctx.defer()
+    userID = ctx.author.id
+    status = pythius.getBalance(database, userID)
+    if status is None:
+        return await ctx.respond(
+            f"Account for <@{ctx.author.id}> doesn't exist")
+    else:
+        return await ctx.respond(
+            f"<@{ctx.author.id}>'s balance : {status}")
+
 @client.slash_command(description="Claim PyCoins")
 async def claim(
         ctx
