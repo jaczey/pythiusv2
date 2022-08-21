@@ -3,10 +3,8 @@ from pymongo.server_api import ServerApi
 from datetime import datetime
 
 def createAccount(database, userID):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    
+    client = database
     db = client['pythius']
     col = db['users']
 
@@ -28,10 +26,8 @@ def createAccount(database, userID):
     else:
         return result
 def getBalance(database, userID):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
+    
     db = client['pythius']
     col = db['users']
 
@@ -45,10 +41,8 @@ def getBalance(database, userID):
     return result
 
 def editBalance(database, userID, balance, amount, changes):
-    client = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
-
+    client = database
+    
     db = client['pythius']
     col = db['users']
 
