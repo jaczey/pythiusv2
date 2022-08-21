@@ -7,6 +7,8 @@ import balance as pythius
 import marketplace as pyshop
 import mee6
 from datetime import datetime, timedelta
+import pymongo
+from pymongo.server_api import ServerApi
 
 intents = discord.Intents.all()
 client = commands.Bot(debug_guilds=[835693520865591327, 921049690265497621], intents=intents)
