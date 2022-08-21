@@ -2,7 +2,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 
 #roleid,left,price,requirement
-def showshop():
+def showshop(database):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -21,7 +21,7 @@ def showshop():
 
     return items
 
-def additem(roleName, roleID, amount, price, requirement):
+def additem(database, roleName, roleID, amount, price, requirement):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -44,7 +44,7 @@ def additem(roleName, roleID, amount, price, requirement):
     else:
         return False
 
-def removeitem(roleID):
+def removeitem(database, roleID):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -65,7 +65,7 @@ def removeitem(roleID):
     else:
         return False
 
-def checkRole(roleID):
+def checkRole(database, roleID):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
@@ -82,7 +82,7 @@ def checkRole(roleID):
     else:
         return False
 
-def buyitem(userID, roleID):
+def buyitem(database, userID, roleID):
     client = pymongo.MongoClient(
         "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
         server_api=ServerApi('1'))
