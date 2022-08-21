@@ -253,7 +253,7 @@ async def add(
 
 async def purger():
     now = datetime.utcnow()
-    while true:
+    while True:
             if now.weekday() < 5:
                 d = now - timedelta(weeks=1)
                 d2 = now - timedelta(hours=1)
