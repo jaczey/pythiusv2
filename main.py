@@ -11,7 +11,7 @@ import pymongo
 from pymongo.server_api import ServerApi
 
 intents = discord.Intents.all()
-client = commands.Bot(debug_guilds=[835693520865591327], intents=intents)
+client = commands.Bot(debug_guilds=[835693520865591327, 921049690265497621], intents=intents)
 EditBalance = client.create_group(name="editbalance", description="Edit user's current balance")
 Marketplace = client.create_group(name="shop", description="Marketplace commands")
 
