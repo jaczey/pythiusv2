@@ -253,9 +253,11 @@ async def add(
     return await ctx.respond(
         f"Successfully added {amount} to {user.mention}'s balance. `{user.name}'s Balance = {newBalance}`")
 
-@client.slash_command(description="Purge Degens and Baby Degens")
+@client.slash_command(description="Purge Degens and Baby Degens", pass_context=True)
 @default_permissions(administrator=True)
-async def purger():
+async def purger(
+ctx
+):
     now = datetime.utcnow()
     done = False
     while True:
