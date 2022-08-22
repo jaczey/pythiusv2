@@ -16,8 +16,9 @@ EditBalance = client.create_group(name="editbalance", description="Edit user's c
 Marketplace = client.create_group(name="shop", description="Marketplace commands")
 
 database = pymongo.MongoClient(
-        "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
-        server_api=ServerApi('1'))
+    "mongodb+srv://danielsimon:nyJrfuUzL9AcQxKn@pythius.gb5zbzu.mongodb.net/?retryWrites=true&w=majority",
+    server_api=ServerApi('1'))
+
 
 @client.slash_command(description="Check balance")
 async def balance(
@@ -32,6 +33,7 @@ async def balance(
     else:
         return await ctx.respond(
             f"<@{ctx.author.id}>'s balance : {status}")
+
 
 @client.slash_command(description="Claim PyCoins")
 async def claim(
@@ -251,71 +253,95 @@ async def add(
     return await ctx.respond(
         f"Successfully added {amount} to {user.mention}'s balance. `{user.name}'s Balance = {newBalance}`")
 
+
 async def purger():
     now = datetime.utcnow()
     done = False
     while True:
-            if now.weekday() > 0:
-                if done:
-                        done = False
-            if now.weekday() == 0:
-                if not done:
-                        d = now - timedelta(weeks=1)
-                        d2 = now - timedelta(hours=1)
-                        users = []
-                        generalChannel = client.get_channel(929054598877024296)
-                        print(generalChannel)
-                        async for message in generalChannel.history(limit=None, before=d2, after=d):
-                            users.append(message.author.id)
+        if now.weekday() > 0:
+            if done:
+                done = False
+        if now.weekday() == 0:
+            if not done:
+                d = now - timedelta(weeks=1)
+                d2 = now - timedelta(hours=1)
+                users = []
+                generalChannel = client.get_channel(929054598877024296)
+                print(generalChannel)
+                async for message in generalChannel.history(limit=None, before=d2, after=d):
+                    users.append(message.author.id)
 
-                        degens = []
-                        babydegens = []
-                        guild = client.get_guild(921049690265497621)
-                        degenrole = discord.utils.get(guild.roles, id=961019236858343496)
-                        babydegen = discord.utils.get(guild.roles, id=980051918485323807)
+                degens = []
+                babydegens = []
+                guild = client.get_guild(921049690265497621)
+                degenrole = discord.utils.get(guild.roles, id=961019236858343496)
+                babydegen = discord.utils.get(guild.roles, id=980051918485323807)
 
-                        for member in guild.members:
-                            if degenrole in member.roles:
-                                if member.id not in degens:
-                                    degens.append(member.id)
+                inactivedegen = []
+                inactivebdegen = []
 
-                                if babydegen in member.roles:
-                                    if member.id not in degens and member.id not in babydegens:
-                                        babydegens.append(member.id)
+                for member in guild.members:
+                    if degenrole in member.roles:
+                        if member.id not in degens:
+                            degens.append(member.id)
 
-                        for member in degens:
-                            counter = 0
-                            for i in users:
-                                if counter < 100:
-                                    if member == i:
-                                        counter += 1
-                                else:
-                                    break
+                        if babydegen in member.roles:
+                            if member.id not in degens and member.id not in babydegens:
+                                babydegens.append(member.id)
+                print(degens)
+                print(babydegen)
+                for member in degens:
+                    counter = 0
+                    for i in users:
+                        if counter < 100:
+                            if member == i:
+                                counter += 1
+                        else:
+                            break
 
-                            if counter < 100:
-                                member = guild.get_member(member)
-                                print(f"{member.name} degen")
-                                await member.remove_roles(degenrole)
-                             
-                        for member in babydegens:
-                            counter = 0
-                            for i in users:
-                                if counter < 100:
-                                    if member == i:
-                                        counter += 1
-                                else:
-                                    break
+                    if counter < 100:
+                        member = guild.get_member(member)
+                        print(f"{member.name} degen")
+                        await member.remove_roles(degenrole)
+                        inactivedegen.append(f"<@{member.id}>, ")
+                print(inactivedegen)
+                for member in babydegens:
+                    counter = 0
+                    for i in users:
+                        if counter < 100:
+                            if member == i:
+                                counter += 1
+                        else:
+                            break
 
-                            if counter < 100:
-                                member = guild.fetch_member(member)
-                                print(f"{member.name} baby degen")
-                                await member.remove_roles(babydegen)
-                        done = True                                
+                    if counter < 100:
+                        member = guild.fetch_member(member)
+                        print(f"{member.name} baby degen")
+                        await member.remove_roles(babydegen)
+                        inactivebdegen.append(f"<@{member.id}>, ")
+                print(inactivebdegen)
+
+                a = ''.join(inactivedegen)
+                b = ''.join(inactivebdegen)
+                embed = discord.Embed(title="Purger", description="L people get purged")
+                if len(inactivedegen) > 0:
+                    embed.add_field(name="Degens", value=f"{a} lost their degen role lol")
+                else:
+                    embed.add_field(name="Degens", value="No degens got purged fuck sake")
+                if len(inactivebdegen) > 0:
+                    embed.add_field(name="Baby Degens", value=f"{b} lost their baby degen role :)")
+                else:
+                    embed.add_field(name="Baby Degens", value="no baby degens were purged this week :(")
+                await generalChannel.send(embed=embed)
+                print("done")
+                done = True
+
 
 @client.event
 async def on_ready():
     print('Logged in as ' + str(client.user))
     await purger()
+
 
 client.run('MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU')
 # Token = MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU
