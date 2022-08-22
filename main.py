@@ -253,7 +253,7 @@ async def add(
 
 async def purger():
     now = datetime.utcnow()
-    done = True
+    done = False
     while True:
             if now.weekday() > 0:
                 if done:
@@ -296,7 +296,7 @@ async def purger():
                                 member = guild.get_member(member)
                                 print(f"{member.name} degen")
                                 await member.remove_roles(degenrole)
-
+                             
                         for member in babydegens:
                             counter = 0
                             for i in users:
@@ -310,6 +310,7 @@ async def purger():
                                 member = guild.fetch_member(member)
                                 print(f"{member.name} baby degen")
                                 await member.remove_roles(babydegen)
+                        done = True                                
 
 @client.event
 async def on_ready():
