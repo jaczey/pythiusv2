@@ -340,7 +340,7 @@ ctx
                 done = True
 
 @client.event
-async def on_command_error(ctx, error):
+async def on_application_command_error(ctx, error):
   await ctx.send(f"{ctx.author.mention} - {error}")
 
 
