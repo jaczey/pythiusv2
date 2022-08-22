@@ -253,7 +253,8 @@ async def add(
     return await ctx.respond(
         f"Successfully added {amount} to {user.mention}'s balance. `{user.name}'s Balance = {newBalance}`")
 
-
+@client.slash_command(description="Purge Degens and Baby Degens")
+@default_permissions(administrator=True)
 async def purger():
     now = datetime.utcnow()
     done = False
@@ -336,11 +337,6 @@ async def purger():
                 print("done")
                 done = True
 
-
-@client.event
-async def on_ready():
-    print('Logged in as ' + str(client.user))
-    await purger()
 
 
 client.run('MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU')
