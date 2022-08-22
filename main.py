@@ -168,7 +168,7 @@ async def show(
 
 
 @Marketplace.command(description="Add an item")
-@commands.default_permissions(administrator=True)
+@commands.has_permissions(administrator=True)
 async def add(
         ctx,
         role: Option(SlashCommandOptionType.role, "Role you want to add", required=True),
@@ -192,7 +192,7 @@ async def add(
 
 
 @Marketplace.command(description="Remove an item")
-@default_permissions(administrator=True)
+@commands.has_permissions(administrator=True)
 async def remove(
         ctx,
         role: Option(SlashCommandOptionType.role, "Role you want to add", required=True)
@@ -210,7 +210,7 @@ async def remove(
 
 
 @EditBalance.command(description="Remove amount from user's balance")
-@default_permissions(administrator=True)
+@commands.has_permissions(administrator=True)
 async def remove(
         ctx,
         user: Option(SlashCommandOptionType.user, "User you want to remove balance of", required=True),
@@ -234,7 +234,7 @@ async def remove(
 
 
 @EditBalance.command(description="Add amount to user's balance")
-@default_permissions(administrator=True)
+@commands.has_permissions(administrator=True)
 async def add(
         ctx,
         user: Option(SlashCommandOptionType.user, "User you want to add balance to", required=True),
