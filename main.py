@@ -168,7 +168,7 @@ async def show(
 
 
 @Marketplace.command(description="Add an item")
-@default_permissions(administrator=True)
+@commands.default_permissions(administrator=True)
 async def add(
         ctx,
         role: Option(SlashCommandOptionType.role, "Role you want to add", required=True),
