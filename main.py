@@ -253,58 +253,63 @@ async def add(
 
 async def purger():
     now = datetime.utcnow()
+    done = True
     while True:
-            if now.weekday() < 5:
-                d = now - timedelta(weeks=1)
-                d2 = now - timedelta(hours=1)
-                users = []
-                generalChannel = client.get_channel(929054598877024296)
-                print(generalChannel)
-                async for message in generalChannel.history(limit=None, before=d2, after=d):
-                    users.append(message.author.id)
+            if now.weekday() > 0:
+                if done:
+                        done = False
+            if now.weekday() == 0:
+                if not done:
+                        d = now - timedelta(weeks=1)
+                        d2 = now - timedelta(hours=1)
+                        users = []
+                        generalChannel = client.get_channel(929054598877024296)
+                        print(generalChannel)
+                        async for message in generalChannel.history(limit=None, before=d2, after=d):
+                            users.append(message.author.id)
 
-                degens = []
-                babydegens = []
-                guild = client.get_guild(921049690265497621)
-                degenrole = discord.utils.get(guild.roles, id=961019236858343496)
-                babydegen = discord.utils.get(guild, id=980051918485323807)
+                        degens = []
+                        babydegens = []
+                        guild = client.get_guild(921049690265497621)
+                        degenrole = discord.utils.get(guild.roles, id=961019236858343496)
+                        babydegen = discord.utils.get(guild.roles, id=980051918485323807)
 
-                for member in guild.members:
-                    if degenrole in member.roles:
-                        if member.id not in degens:
-                            degens.append(member.id)
+                        for member in guild.members:
+                            if degenrole in member.roles:
+                                if member.id not in degens:
+                                    degens.append(member.id)
 
-                        if babydegen in member.roles:
-                            if member.id not in degens and member.id not in babydegens:
-                                babydegens.append(member.id)
+                                if babydegen in member.roles:
+                                    if member.id not in degens and member.id not in babydegens:
+                                        babydegens.append(member.id)
 
-                for member in degens:
-                    counter = 0
-                    for i in users:
-                        if counter < 100:
-                            if member == i:
-                                counter += 1
-                        else:
-                            break
+                        for member in degens:
+                            counter = 0
+                            for i in users:
+                                if counter < 100:
+                                    if member == i:
+                                        counter += 1
+                                else:
+                                    break
 
-                    if counter < 100:
-                        member = guild.get_member(member)
-                        print(f"{member.name} degen")
-                        await member.remove_roles(degenrole)
+                            if counter < 100:
+                                member = guild.get_member(member)
+                                print(f"{member.name} degen")
+                                await member.remove_roles(degenrole)
 
-                for member in babydegens:
-                    counter = 0
-                    for i in users:
-                        if counter < 100:
-                            if member == i:
-                                counter += 1
-                        else:
-                            break
+                        for member in babydegens:
+                            counter = 0
+                            for i in users:
+                                if counter < 100:
+                                    if member == i:
+                                        counter += 1
+                                else:
+                                    break
 
-                    if counter < 100:
-                        member = guild.fetch_member(member)
-                        print(f"{member.name} baby degen")
-                        await member.remove_roles(babydegen)
+                            if counter < 100:
+                                member = guild.fetch_member(member)
+                                print(f"{member.name} baby degen")
+                                await member.remove_roles(babydegen)
 
 @client.event
 async def on_ready():
