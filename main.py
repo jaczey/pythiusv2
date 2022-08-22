@@ -325,13 +325,13 @@ async def purger():
                 b = ''.join(inactivebdegen)
                 embed = discord.Embed(title="Purger", description="L people get purged")
                 if len(inactivedegen) > 0:
-                    embed.add_field(name="Degens", value=f"{a} lost their degen role lol")
+                    embed.add_field(name="Degens", value=f"{a} lost their degen role lol" inline=False)
                 else:
-                    embed.add_field(name="Degens", value="No degens got purged fuck sake")
+                    embed.add_field(name="Degens", value="No degens got purged fuck sake" inline=False)
                 if len(inactivebdegen) > 0:
-                    embed.add_field(name="Baby Degens", value=f"{b} lost their baby degen role :)")
+                    embed.add_field(name="Baby Degens", value=f"{b} lost their baby degen role :)" inline=False)
                 else:
-                    embed.add_field(name="Baby Degens", value="no baby degens were purged this week :(")
+                    embed.add_field(name="Baby Degens", value="no baby degens were purged this week :(" inline=False)
                 await generalChannel.send(embed=embed)
                 print("done")
                 done = True
