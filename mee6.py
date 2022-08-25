@@ -1,10 +1,8 @@
-from mee6_py_api import API as mee6
 import asyncio
 import pymongo
 from pymongo.server_api import ServerApi
 
-async def claim(database, userID, guildID):
-    api = mee6(guildID)
+async def claim(api, database, userID, guildID):
     level = await api.levels.get_user_level(userID)
     
     client = database
