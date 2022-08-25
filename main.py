@@ -5,10 +5,11 @@ from discord.ext import commands
 from discord import Option, SlashCommandOptionType, default_permissions
 import balance as pythius
 import marketplace as pyshop
-import mee6
 from datetime import datetime, timedelta
 import pymongo
 from pymongo.server_api import ServerApi
+import mee6
+from mee6_py_api import API as mee62
 
 intents = discord.Intents.all()
 client = commands.Bot(debug_guilds=[835693520865591327, 921049690265497621], intents=intents)
@@ -34,7 +35,7 @@ async def balance(
         return await ctx.respond(
             f"<@{ctx.author.id}>'s balance : {status}")
 
-
+api = mee62(guildID)
 @client.slash_command(description="Claim PyCoins")
 async def claim(
         ctx
@@ -42,7 +43,7 @@ async def claim(
     await ctx.defer()
     userID = ctx.author.id
     guildID = 921049690265497621
-    status = await mee6.claim(database, userID, guildID)
+    status = await mee6.claim(api, database, userID, guildID)
     if status[0] == "Error":
         if status[1] == "Not created":
             return await ctx.respond(
