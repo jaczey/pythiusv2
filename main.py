@@ -340,10 +340,6 @@ ctx
                 print("done")
                 done = True
 
-@client.event
-async def on_application_command_error(ctx, error):
-  await ctx.send(f"{ctx.author.mention} - {error}")
-
 
 client.run('MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU')
 # Token = MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU
