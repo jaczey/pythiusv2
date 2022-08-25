@@ -110,7 +110,8 @@ async def buy(
                 return await ctx.respond(
                     f"Successfully bought the role")
     elif requirement is not None:
-        role = discord.utils.get(ctx.guild.roles, id=requirement)
+        print(requirement)
+        role = discord.utils.get(ctx.guild.roles, id=int(requirement))
         rolecheck = discord.utils.get(ctx.author.roles, name=str(role.name))
         if rolecheck is not None and rolecheck.name == role.name:
             rolecheck = discord.utils.get(ctx.author.roles, name=str(name.name))
