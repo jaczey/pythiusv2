@@ -35,7 +35,7 @@ async def balance(
         return await ctx.respond(
             f"<@{ctx.author.id}>'s balance : {status}")
 
-api = mee62(guildID)
+api = mee62(921049690265497621)
 @client.slash_command(description="Claim PyCoins")
 async def claim(
         ctx
