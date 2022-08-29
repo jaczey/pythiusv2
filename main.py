@@ -260,6 +260,7 @@ async def add(
 async def purger(
 ctx
 ):
+    await ctx.defer()
     now = datetime.utcnow()
     done = False
     while True:
