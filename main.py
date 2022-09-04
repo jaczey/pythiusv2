@@ -5,7 +5,7 @@ from discord.ext import commands
 from discord import Option, SlashCommandOptionType, default_permissions
 import balance as pythius
 import marketplace as pyshop
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import pymongo
 from pymongo.server_api import ServerApi
 import mee6
@@ -262,85 +262,83 @@ ctx
 ):
     await ctx.defer()
     now = datetime.utcnow()
-    done = False
-    while True:
-        if now.weekday() > 0:
-            if done:
-                done = False
-        if now.weekday() == 0:
-            if not done:
-                d = now - timedelta(weeks=1)
-                d2 = now - timedelta(hours=1)
-                users = []
-                generalChannel = client.get_channel(929054598877024296)
-                print(generalChannel)
-                async for message in generalChannel.history(limit=None, before=d2, after=d):
-                    users.append(message.author.id)
+    d = now - timedelta(weeks=1)
+    d2 = now - timedelta(hours=1)
 
-                degens = []
-                babydegens = []
-                guild = client.get_guild(921049690265497621)
-                degenrole = discord.utils.get(guild.roles, id=961019236858343496)
-                babydegen = discord.utils.get(guild.roles, id=980051918485323807)
+    d = d.replace(tzinfo=timezone.utc)
+    d2 = d2.replace(tzinfo=timezone.utc)
 
-                inactivedegen = []
-                inactivebdegen = []
+    d = d.replace(tzinfo=None)
+    d2 = d2.replace(tzinfo=None)
+    users = []
+    generalChannel = client.get_channel(929054598877024296)
+    print(generalChannel)
+    async for message in generalChannel.history(limit=None, before=d2, after=d):
+        users.append(message.author.id)
 
-                for member in guild.members:
-                    if degenrole in member.roles:
-                        if member.id not in degens:
-                            degens.append(member.id)
+    degens = []
+    babydegens = []
+    guild = client.get_guild(921049690265497621)
+    degenrole = discord.utils.get(guild.roles, id=961019236858343496)
+    babydegen = discord.utils.get(guild.roles, id=980051918485323807)
 
-                        if babydegen in member.roles:
-                            if member.id not in degens and member.id not in babydegens:
-                                babydegens.append(member.id)
-                print(degens)
-                print(babydegen)
-                for member in degens:
-                    counter = 0
-                    for i in users:
-                        if counter < 100:
-                            if member == i:
-                                counter += 1
-                        else:
-                            break
+    inactivedegen = []
+    inactivebdegen = []
 
-                    if counter < 100:
-                        member = guild.get_member(member)
-                        print(f"{member.name} degen")
-                        await member.remove_roles(degenrole)
-                        inactivedegen.append(f"<@{member.id}>, ")
-                print(inactivedegen)
-                for member in babydegens:
-                    counter = 0
-                    for i in users:
-                        if counter < 100:
-                            if member == i:
-                                counter += 1
-                        else:
-                            break
+    for member in guild.members:
+        if degenrole in member.roles:
+            if member.id not in degens:
+                degens.append(member.id)
 
-                    if counter < 100:
-                        member = guild.fetch_member(member)
-                        print(f"{member.name} baby degen")
-                        await member.remove_roles(babydegen)
-                        inactivebdegen.append(f"<@{member.id}>, ")
-                print(inactivebdegen)
+            if babydegen in member.roles:
+                if member.id not in degens and member.id not in babydegens:
+                    babydegens.append(member.id)
+    print(degens)
+    print(babydegen)
+    for member in degens:
+        counter = 0
+        for i in users:
+            if counter < 100:
+                if member == i:
+                    counter += 1
+            else:
+                break
 
-                a = ''.join(inactivedegen)
-                b = ''.join(inactivebdegen)
-                embed = discord.Embed(title="Purger", description="L people get purged")
-                if len(inactivedegen) > 0:
-                    embed.add_field(name="Degens", value=f"{a} lost their degen role lol", inline=False)
-                else:
-                    embed.add_field(name="Degens", value="No degens got purged fuck sake", inline=False)
-                if len(inactivebdegen) > 0:
-                    embed.add_field(name="Baby Degens", value=f"{b} lost their baby degen role :)", inline=False)
-                else:
-                    embed.add_field(name="Baby Degens", value="no baby degens were purged this week :(", inline=False)
-                await generalChannel.send(embed=embed)
-                print("done")
-                done = True
+        if counter < 100:
+            member = guild.get_member(member)
+            print(f"{member.name} degen")
+            await member.remove_roles(degenrole)
+            inactivedegen.append(f"<@{member.id}>, ")
+    print(inactivedegen)
+    for member in babydegens:
+        counter = 0
+        for i in users:
+            if counter < 100:
+                if member == i:
+                    counter += 1
+            else:
+                break
+
+        if counter < 100:
+            member = guild.fetch_member(member)
+            print(f"{member.name} baby degen")
+            await member.remove_roles(babydegen)
+            inactivebdegen.append(f"<@{member.id}>, ")
+    print(inactivebdegen)
+
+    a = ''.join(inactivedegen)
+    b = ''.join(inactivebdegen)
+    embed = discord.Embed(title="Purger", description="L people get purged")
+    if len(inactivedegen) > 0:
+        embed.add_field(name="Degens", value=f"{a} lost their degen role lol", inline=False)
+    else:
+        embed.add_field(name="Degens", value="No degens got purged fuck sake", inline=False)
+    if len(inactivebdegen) > 0:
+        embed.add_field(name="Baby Degens", value=f"{b} lost their baby degen role :)", inline=False)
+    else:
+        embed.add_field(name="Baby Degens", value="no baby degens were purged this week :(", inline=False)
+    await generalChannel.send(embed=embed)
+    await ctx.respond("Done")
 
 
 client.run('MTAwODA3MzA5NTUxNDQyNzQ4Mg.Gfm_93.BGJRfzf8QCfwn6bML3SvHq8nbw8-5I9as2MeMU')
